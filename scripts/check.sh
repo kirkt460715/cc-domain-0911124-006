@@ -3,3 +3,4 @@ set -eu
 python3 -m compileall -q sealvault
 python3 -m unittest discover -s tests -v
 python3 -m sealvault replay fixtures/sealing.json
+python3 -m sealvault replay fixtures/forecast.json

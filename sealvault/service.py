@@ -23,6 +23,7 @@ from sealvault.custody.attestations import Attestations
 from sealvault.transfer import recovery, archive
 from sealvault.inspect.scrub import Scrubber
 from sealvault.retention.replicas import ReplicaPolicies
+from sealvault.retention.forecast import Forecast
 from sealvault.transfer.disclosure import Disclosures
 
 
@@ -45,10 +46,11 @@ class Vault:
         self.attestations = Attestations(self.db)
         self.repairs = Repairs(self.db)
         self.schedules = Schedules(self.db)
+        self.forecast = Forecast(self.db)
         quotas.initialize(self.db)
         self.checkpoints = Checkpoints(self.db)
         self.routes = {}
-        for prefix, service in {'object': self.objects, 'case': self.cases, 'seal': self.seals, 'handoff': self.handoffs, 'gc': self.collector, 'stage': self.staging, 'package': self.packages, 'scrub': self.scrubber, 'replica_policy': self.replica_policies, 'disclosure': self.disclosures, 'catalog': self.catalog, 'disposal': self.disposal, 'accession': self.accessions, 'attestation': self.attestations, 'repair': self.repairs, 'schedule': self.schedules, 'checkpoint': self.checkpoints}.items():
+        for prefix, service in {'object': self.objects, 'case': self.cases, 'seal': self.seals, 'handoff': self.handoffs, 'gc': self.collector, 'stage': self.staging, 'package': self.packages, 'scrub': self.scrubber, 'replica_policy': self.replica_policies, 'disclosure': self.disclosures, 'catalog': self.catalog, 'disposal': self.disposal, 'accession': self.accessions, 'attestation': self.attestations, 'repair': self.repairs, 'schedule': self.schedules, 'checkpoint': self.checkpoints, 'forecast': self.forecast}.items():
             for name, function in inspect.getmembers(service, inspect.ismethod):
                 if name.startswith('_') or name in {'read', 'put', 'repair', 'editable'}:
                     continue

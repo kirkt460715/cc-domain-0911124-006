@@ -1,0 +1,473 @@
+{
+  "synthetic": true,
+  "steps": [
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "collector",
+          "role": "collector"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "custodian",
+          "role": "custodian"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "admin",
+          "role": "administrator"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "c2hhcmVkLWxlZGdlci1wYWdl"
+        }
+      },
+      "expect": {
+        "size": 18,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "YWxwaGEtY2FzZS1ub3Rlcw=="
+        }
+      },
+      "expect": {
+        "size": 16,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "YmV0YS1jYXNlLWFyY2hpdmU="
+        }
+      },
+      "expect": {
+        "size": 17,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "dHJhbnNpZW50LWV4cG9ydC1idWZmZXI="
+        }
+      },
+      "expect": {
+        "size": 23,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "case.create",
+        "arguments": {
+          "case_id": "budget-alpha",
+          "title": "Synthetic budget case alpha",
+          "owner": "collector",
+          "classification": "internal"
+        }
+      },
+      "expect": {
+        "revision": 1
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "budget-alpha",
+          "expected_revision": 1,
+          "actor": "collector",
+          "value": {
+            "path": "ledger/shared-page.bin",
+            "digest": "42b8218e5a2b016e0b02b0e590405e459faa3f0387dd8e51e8e4066738501eb6",
+            "size": 18,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 2
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "budget-alpha",
+          "expected_revision": 2,
+          "actor": "collector",
+          "value": {
+            "path": "notes/alpha-notes.bin",
+            "digest": "7b74d2befc9fc6bfba0f0b8959eb2b5bc95e1784a3393ea3368514a491c4499c",
+            "size": 16,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 3
+      }
+    },
+    {
+      "request": {
+        "operation": "case.create",
+        "arguments": {
+          "case_id": "budget-beta",
+          "title": "Synthetic budget case beta",
+          "owner": "collector",
+          "classification": "internal"
+        }
+      },
+      "expect": {
+        "revision": 1
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "budget-beta",
+          "expected_revision": 1,
+          "actor": "collector",
+          "value": {
+            "path": "ledger/shared-page.bin",
+            "digest": "42b8218e5a2b016e0b02b0e590405e459faa3f0387dd8e51e8e4066738501eb6",
+            "size": 18,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 2
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "budget-beta",
+          "expected_revision": 2,
+          "actor": "collector",
+          "value": {
+            "path": "archive/beta-archive.bin",
+            "digest": "2d72fe8ccce99f0dc64b90a2dc8b8d455075115e7be4d2207ed0dc1728ef90ac",
+            "size": 17,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 3
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.prepare",
+        "arguments": {
+          "manifest_id": "seal-alpha",
+          "case_id": "budget-alpha",
+          "expected_revision": 3,
+          "actor": "collector"
+        }
+      },
+      "expect": {
+        "state": "prepared"
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.seal",
+        "arguments": {
+          "manifest_id": "seal-alpha",
+          "reviewer": "custodian",
+          "retain_until": "2099-06-01T00:00:00Z"
+        }
+      },
+      "expect": {
+        "state": "sealed"
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.prepare",
+        "arguments": {
+          "manifest_id": "seal-beta",
+          "case_id": "budget-beta",
+          "expected_revision": 3,
+          "actor": "collector"
+        }
+      },
+      "expect": {
+        "state": "prepared"
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.seal",
+        "arguments": {
+          "manifest_id": "seal-beta",
+          "reviewer": "custodian",
+          "retain_until": "2099-06-15T00:00:00Z"
+        }
+      },
+      "expect": {
+        "state": "sealed"
+      }
+    },
+    {
+      "request": {
+        "operation": "retention.hold",
+        "arguments": {
+          "hold_id": "legal-hold",
+          "manifest_id": "seal-beta",
+          "actor": "custodian",
+          "reason": "Ongoing synthetic litigation"
+        }
+      },
+      "expect": {
+        "state": "active"
+      }
+    },
+    {
+      "request": {
+        "operation": "object.pin",
+        "arguments": {
+          "pin_id": "temp-pin",
+          "identity": "4c97eb0980c2b2f96864e7893c72b786ec50658622a0f8f05cdf2ce0018de307",
+          "owner": "collector",
+          "expires_at": "2099-06-10T00:00:00Z",
+          "reason": "Temporary synthetic export check"
+        }
+      },
+      "expect": {
+        "expires_at": "2099-06-10T00:00:00.000000Z"
+      }
+    },
+    {
+      "request": {
+        "operation": "forecast.scenario",
+        "arguments": {
+          "forecast_id": "baseline-2099",
+          "days": [
+            "2099-05-01T00:00:00Z",
+            "2099-05-20T00:00:00Z",
+            "2099-06-01T00:00:00Z",
+            "2099-06-10T00:00:00Z",
+            "2099-06-15T00:00:00Z",
+            "2099-07-01T00:00:00Z"
+          ]
+        }
+      },
+      "expect": {
+        "body.objects.unique_bytes": 74,
+        "body.series.0.protected_unique_bytes": 74,
+        "body.series.0.protected_logical_bytes": 92,
+        "body.series.2.protected_unique_bytes": 58,
+        "body.series.2.releasable_bytes": 16,
+        "body.series.3.protected_unique_bytes": 35,
+        "body.series.3.releasable_bytes": 39,
+        "body.series.5.protected_unique_bytes": 35,
+        "body.series.5.protected_by_kind.hold.bytes": 35,
+        "body.series.5.releasable_bytes": 39
+      }
+    },
+    {
+      "request": {
+        "operation": "forecast.scenario",
+        "arguments": {
+          "forecast_id": "whatif-release",
+          "days": [
+            "2099-05-01T00:00:00Z",
+            "2099-05-20T00:00:00Z",
+            "2099-06-01T00:00:00Z",
+            "2099-06-10T00:00:00Z",
+            "2099-06-15T00:00:00Z",
+            "2099-07-01T00:00:00Z"
+          ],
+          "adjustments": [
+            {
+              "kind": "shorten_retention",
+              "manifest_id": "seal-alpha",
+              "retain_until": "2099-05-15T00:00:00Z"
+            },
+            {
+              "kind": "release_hold",
+              "hold_id": "legal-hold",
+              "at": "2099-06-20T00:00:00Z"
+            }
+          ]
+        }
+      },
+      "expect": {
+        "body.series.1.protected_unique_bytes": 58,
+        "body.series.1.releasable_bytes": 16,
+        "body.series.4.protected_unique_bytes": 35,
+        "body.series.5.protected_unique_bytes": 0,
+        "body.series.5.releasable_bytes": 74,
+        "body.baseline.5.protected_unique_bytes": 35
+      }
+    },
+    {
+      "request": {
+        "operation": "forecast.search",
+        "arguments": {
+          "search_id": "budget-cut",
+          "days": [
+            "2099-06-05T00:00:00Z"
+          ],
+          "target_day": "2099-06-05T00:00:00Z",
+          "max_protected_bytes": 23,
+          "candidates": [
+            {
+              "candidate_id": "shorten-alpha",
+              "cost": 2,
+              "adjustment": {
+                "kind": "shorten_retention",
+                "manifest_id": "seal-alpha",
+                "retain_until": "2099-05-15T00:00:00Z"
+              }
+            },
+            {
+              "candidate_id": "shorten-beta",
+              "cost": 4,
+              "adjustment": {
+                "kind": "shorten_retention",
+                "manifest_id": "seal-beta",
+                "retain_until": "2099-06-01T00:00:00Z"
+              }
+            },
+            {
+              "candidate_id": "lift-hold",
+              "cost": 7,
+              "adjustment": {
+                "kind": "release_hold",
+                "hold_id": "legal-hold",
+                "at": "2099-06-03T00:00:00Z"
+              }
+            }
+          ]
+        }
+      },
+      "expect": {
+        "body.status": "optimal",
+        "body.proven_optimal": true,
+        "body.best.cost": 11,
+        "body.best.candidate_ids.0": "lift-hold",
+        "body.best.candidate_ids.1": "shorten-beta",
+        "body.best.protected_bytes": 23,
+        "body.best.released_bytes": 35,
+        "body.gap_bytes": 0,
+        "body.candidates.0.standalone_released_bytes": 0,
+        "body.candidates.1.standalone_released_bytes": 0,
+        "body.candidates.2.standalone_released_bytes": 0
+      }
+    },
+    {
+      "request": {
+        "operation": "forecast.search",
+        "arguments": {
+          "search_id": "impossible-cut",
+          "days": [
+            "2099-06-05T00:00:00Z"
+          ],
+          "target_day": "2099-06-05T00:00:00Z",
+          "max_protected_bytes": 22,
+          "candidates": [
+            {
+              "candidate_id": "shorten-alpha",
+              "cost": 2,
+              "adjustment": {
+                "kind": "shorten_retention",
+                "manifest_id": "seal-alpha",
+                "retain_until": "2099-05-15T00:00:00Z"
+              }
+            },
+            {
+              "candidate_id": "shorten-beta",
+              "cost": 4,
+              "adjustment": {
+                "kind": "shorten_retention",
+                "manifest_id": "seal-beta",
+                "retain_until": "2099-06-01T00:00:00Z"
+              }
+            },
+            {
+              "candidate_id": "lift-hold",
+              "cost": 7,
+              "adjustment": {
+                "kind": "release_hold",
+                "hold_id": "legal-hold",
+                "at": "2099-06-03T00:00:00Z"
+              }
+            }
+          ]
+        }
+      },
+      "expect": {
+        "body.status": "unreachable",
+        "body.proven_optimal": false,
+        "body.best.feasible": false,
+        "body.best.protected_bytes": 23,
+        "body.gap_bytes": 1
+      }
+    },
+    {
+      "request": {
+        "operation": "forecast.compare",
+        "arguments": {
+          "before_id": "baseline-2099",
+          "after_id": "whatif-release"
+        }
+      },
+      "expect": {
+        "days.common.1.protected_delta_bytes": -16,
+        "days.common.5.protected_delta_bytes": -35,
+        "adjustments.only_after.0.kind": "release_hold"
+      }
+    },
+    {
+      "request": {
+        "operation": "check.run",
+        "arguments": {}
+      },
+      "expect": {
+        "ok": true
+      }
+    }
+  ]
+}
