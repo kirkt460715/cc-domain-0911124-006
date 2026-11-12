@@ -1,0 +1,297 @@
+{
+  "synthetic": true,
+  "steps": [
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "collector",
+          "role": "collector"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "custodian",
+          "role": "custodian"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "reviewer",
+          "role": "custodian"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "auditor",
+          "role": "auditor"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "actor.register",
+        "arguments": {
+          "actor_id": "admin",
+          "role": "administrator"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "case.create",
+        "arguments": {
+          "case_id": "case-demo",
+          "title": "Synthetic data-asset evidence",
+          "owner": "collector",
+          "classification": "restricted"
+        }
+      },
+      "expect": {
+        "revision": 1
+      }
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "eyJzeW50aGV0aWMiOnRydWUsInJvd3MiOjJ9",
+          "expected_digest": "a9935275712a76eff6fec3ed4b45c56a2844ade3de569fd7ee7894b5951068f1"
+        }
+      },
+      "expect": {
+        "size": 27,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "case-demo",
+          "expected_revision": 1,
+          "actor": "collector",
+          "value": {
+            "path": "sources/records.json",
+            "digest": "a9935275712a76eff6fec3ed4b45c56a2844ade3de569fd7ee7894b5951068f1",
+            "size": 27,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 2
+      }
+    },
+    {
+      "request": {
+        "operation": "object.put_base64",
+        "arguments": {
+          "content": "bG9jYWwtc3ludGhldGljLWV2aWRlbmNl",
+          "expected_digest": "4fa6f49223b6818bfb9a07666f7725448beb79c303b17f83e5b8539f31a1cd30"
+        }
+      },
+      "expect": {
+        "size": 24,
+        "duplicate": false
+      }
+    },
+    {
+      "request": {
+        "operation": "case.attach",
+        "arguments": {
+          "case_id": "case-demo",
+          "expected_revision": 2,
+          "actor": "collector",
+          "value": {
+            "path": "checks/result.txt",
+            "digest": "4fa6f49223b6818bfb9a07666f7725448beb79c303b17f83e5b8539f31a1cd30",
+            "size": 24,
+            "media_type": "application/octet-stream",
+            "metadata": {
+              "synthetic": true
+            }
+          }
+        }
+      },
+      "expect": {
+        "revision": 3
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.prepare",
+        "arguments": {
+          "manifest_id": "seal-demo",
+          "case_id": "case-demo",
+          "expected_revision": 3,
+          "actor": "collector"
+        }
+      },
+      "expect": {
+        "state": "prepared"
+      }
+    },
+    {
+      "request": {
+        "operation": "seal.seal",
+        "arguments": {
+          "manifest_id": "seal-demo",
+          "reviewer": "custodian",
+          "retain_until": "2099-01-01T00:00:00Z"
+        }
+      },
+      "expect": {
+        "state": "sealed"
+      }
+    },
+    {
+      "request": {
+        "operation": "custody.verify",
+        "arguments": {
+          "case_id": "case-demo"
+        }
+      },
+      "expect": {
+        "valid": true
+      }
+    },
+    {
+      "request": {
+        "operation": "package.prepare",
+        "arguments": {
+          "export_id": "export-demo",
+          "manifest_id": "seal-demo",
+          "owner": "custodian",
+          "expires_at": "2098-01-01T00:00:00Z",
+          "chunk_size": 8
+        }
+      },
+      "expect": {
+        "payload.data.format": "sealvault-package"
+      }
+    },
+    {
+      "request": {
+        "operation": "retention.hold",
+        "arguments": {
+          "hold_id": "hold-demo",
+          "manifest_id": "seal-demo",
+          "actor": "custodian",
+          "reason": "Synthetic preservation review"
+        }
+      },
+      "expect": {
+        "state": "active"
+      }
+    },
+    {
+      "request": {
+        "operation": "retention.get",
+        "arguments": {
+          "manifest_id": "seal-demo"
+        }
+      },
+      "expect": {
+        "eligible": false,
+        "holds.0.hold_id": "hold-demo"
+      }
+    },
+    {
+      "request": {
+        "operation": "scrub.start",
+        "arguments": {
+          "run_id": "scrub-demo",
+          "actor": "auditor"
+        }
+      },
+      "expect": {
+        "state": "running"
+      }
+    },
+    {
+      "request": {
+        "operation": "scrub.advance",
+        "arguments": {
+          "run_id": "scrub-demo",
+          "actor": "auditor"
+        }
+      },
+      "expect": {
+        "state": "complete",
+        "cursor": 2
+      }
+    },
+    {
+      "request": {
+        "operation": "scrub.report",
+        "arguments": {
+          "run_id": "scrub-demo"
+        }
+      },
+      "expect": {
+        "fully_verified": true,
+        "remaining": 0
+      }
+    },
+    {
+      "request": {
+        "operation": "catalog.capture",
+        "arguments": {
+          "snapshot_id": "catalog-demo"
+        }
+      },
+      "expect": {}
+    },
+    {
+      "request": {
+        "operation": "catalog.page",
+        "arguments": {
+          "snapshot_id": "catalog-demo"
+        }
+      },
+      "expect": {
+        "items.0.manifest_id": "seal-demo",
+        "items.0.active_holds.0": "hold-demo"
+      }
+    },
+    {
+      "request": {
+        "operation": "semantic.replay_case",
+        "arguments": {
+          "case_id": "case-demo"
+        }
+      },
+      "expect": {
+        "valid": true,
+        "projected.state": "sealed"
+      }
+    },
+    {
+      "request": {
+        "operation": "check.run",
+        "arguments": {}
+      },
+      "expect": {
+        "ok": true
+      }
+    }
+  ]
+}
